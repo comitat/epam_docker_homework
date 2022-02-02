@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+   frontend:
+     container_name: frontend
+     build: 
+       context: .
+       dockerfile: Dockerfile.front 
+     image: frontend:v10
+     restart: always 
+     ports: 
+       - 3000:3000
+     depends_on:
+        - backend
+        - database
+     stdin_open: true
+     networks:
+       - netfront
+
+   backend:
+     container_name: backend
+     build: 
+       context: . 
+     image: backend:v10
+     restart: always 
+     ports:
+       - 8000:8000
+     depends_on:
+       - database 
+     networks:
+       - netback
+
+   database: 
+     container_name: database
+     build: 
+       context: .
+       dockerfile: Dockerfile.psql
+     image: postgre14.1:v10
+     restart: always
+     ports:
+       - 5432:5432
+     volumes: 
+       -  postgres:/var/lib/postgresql/data
+     networks:
+       - netback
+
+networks:
+   netfront:
+    external: true 
+   netback:
+    external: true 
+
+volumes:
+   postgres: {}
