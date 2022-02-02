@@ -1,0 +1,12 @@
+FROM node:8-slim
+WORKDIR /app 
+
+COPY ./frontend/*.json ./
+RUN npm install 
+COPY ./frontend ./
+
+#Change localhost for my IP 
+RUN sed -i 's/localhost:8000/82.151.212.74:8000/g' src/*Api.js && \
+    sed -i 's/localhost:8000/82.151.212.74:8000/g' src/*API.js
+
+CMD [ "npm", "start" ] 
