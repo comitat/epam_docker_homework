@@ -1,0 +1,44 @@
+---
+
+version: "3.8"
+
+services: 
+   epam_httpd:
+    image: 446dd2c87f41 
+    container_name: epam_httpd
+    restart: always
+    deploy: 
+      resources: 
+        limits: 
+          cpus: "0.4"
+          memory: 170M 
+    ports: 
+      - 778:80
+    volumes: 
+      - ./share_data:/var/www/site_epam
+    networks: 
+      - net_for_httpd
+
+   epam_nginx:
+    image: 974d134512e8
+    container_name: epam_nginx
+    restart: always
+    deploy: 
+      resources: 
+        limits: 
+          cpus: "0.2"
+          memory: 128M 
+    ports: 
+       - 779:80 
+    volumes: 
+       - ./share_data:/var/www/site_epam
+    networks: 
+       - net_for_nginx
+
+
+networks:
+   net_for_httpd: 
+    external: true 
+   net_for_nginx: 
+    external: true 
+    
